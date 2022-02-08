@@ -12,12 +12,20 @@ public class ServiceClass {
 	private static final String  FRUIT_CHERRIES_LABEL = "cherries";
 	private static final String  FRUIT_PEACHES_LABEL = "peaches";
 	private static final String  FRUIT_PEARS_LABEL = "pears";
-	
-//	FruitModel fruit1 = new FruitModel(FRUIT_CHERRIES_LABEL, 5.30) ;
-//	FruitModel fruit2 = new FruitModel(FRUIT_PEACHES_LABEL, 5.30) ;
-//	private List<FruitModel> fruitsAll = new ArrayList<FruitModel>();
 
 	private List<Stand> stands = new ArrayList<Stand>();
+	
+	private void initStands() {
+		
+		List<Fruit> fruitsAll = new ArrayList<Fruit>();
+		fruitsAll.add(new Fruit(FRUIT_CHERRIES_LABEL, 9.30));
+		fruitsAll.add(new Fruit(FRUIT_PEACHES_LABEL, 6.5));
+		fruitsAll.add(new Fruit(FRUIT_PEARS_LABEL, 5.30));
+		
+		stands.add(new Stand(1, fruitsAll));
+		stands.add(new Stand(2, fruitsAll));
+		stands.add(new Stand(3, fruitsAll));
+	}
 	
 	 /**
      * Return the number of the first fruit stand that has the lowest possible total price for a basket of cherries and a basket of peaches.
@@ -29,6 +37,8 @@ public class ServiceClass {
 		double totalPriceMin = MIN_VALUE;
 		double totalPrice = 0;
 		Stand standMin = null;
+		
+		this.initStands();
 		
 		for(Stand stand : stands) {
 			if(stand != null) {
@@ -56,6 +66,8 @@ public class ServiceClass {
 	 * @return
 	 */
 	public String getFirstStandWithPearsAndCherriesOrPeaches() {
+		
+		this.initStands();
 		
 		for(Stand stand : stands) {
 			if(stand != null) {
@@ -85,6 +97,8 @@ public class ServiceClass {
 	 * @return
 	 */
 	public String getStandsFruitPricePurchased() {
+		
+		this.initStands();
 		
 		List<String> selectedStands = new ArrayList<String>();
 		boolean isBuyCherries = false;

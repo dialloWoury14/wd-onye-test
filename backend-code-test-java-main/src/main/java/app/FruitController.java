@@ -5,6 +5,8 @@ import io.jooby.annotations.ContextParam;
 import io.jooby.annotations.GET;
 import io.jooby.annotations.Path;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import services.ServiceClass;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,8 @@ import javax.persistence.EntityManager;
 @Tag(name = "FruitController", description = "Controller for the first task of the code test")
 @Path("/fruit")
 public class FruitController {
+	
+	private ServiceClass service = new ServiceClass();
 
     // A logger, should you need one
     private static final Logger logger = LoggerFactory.getLogger(FruitController.class);
@@ -35,7 +39,18 @@ public class FruitController {
      */
     @GET("/task1")
     public String task1(@ContextParam Context context) {
-        // TODO return the solution for the first task in this method
-        return "your result here";
+    	// First Scenario
+    	return service.getStandWithMinTotalPrice();
+    	
+    	 /*Scenario 1 - modification:
+    	   Return first stand with pears and (cherries or peaches) */
+//    	return service.getFirstStandWithPearsAndCherriesOrPeaches();
+    	
+    	/* Scenario 3 - modification:
+    	   Return stands, price, what fruits were purchased and by how many stands the selection was made.*/
+//    	return service.getStandsFruitPricePurchased();
+    	
+//        return "your result here";
+//        return "your result here";
     }
 }
