@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  onye-backend-test:
+    build: .
+    image: onye-backend-test
+    restart: always
+    stop_grace_period: 2s
+    ports:
+      - "8080:8080"
+    volumes:
+      - backend-test-volume:/tmp
+
+volumes:
+  backend-test-volume:
+    external: false

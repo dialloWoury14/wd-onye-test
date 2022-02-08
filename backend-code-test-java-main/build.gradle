@@ -1,0 +1,84 @@
+buildscript {
+    ext {
+        h2Version = "2.1.210"
+        gsonVersion = "2.8.9"
+        logbackVersion = "1.2.10"
+        jsonWebtokenVersion = "0.11.2"
+        joobyVersion = "2.13.0"
+        junitVersion = "5.8.2"
+        okhttp3Version = "4.9.3"
+        osDetectorVersion = "1.7.0"
+        shadowVersion = "7.0.0"
+        springDependencyManagementVersion = "1.0.11.RELEASE"
+        swaggerAnnotationsVersion = "2.1.12"
+    }
+}
+
+plugins {
+    id "application"
+    id "io.jooby.openAPI" version "${joobyVersion}"
+    id "io.jooby.run" version "${joobyVersion}"
+    id "io.spring.dependency-management" version "${springDependencyManagementVersion}"
+    id "com.google.osdetector" version "${osDetectorVersion}"
+    id "com.github.johnrengelman.shadow" version "${shadowVersion}"
+}
+
+group "app"
+version "1.0.0"
+mainClassName = "app.App"
+sourceCompatibility = 11
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.jooby:jooby-bom:$joobyVersion"
+    }
+}
+
+dependencies {
+    annotationProcessor "io.jooby:jooby-apt:${joobyVersion}"
+    implementation "io.jooby:jooby-netty:${joobyVersion}"
+    implementation "io.jooby:jooby-gson:${joobyVersion}"
+    implementation "io.jooby:jooby-hikari:${joobyVersion}"
+    implementation "io.jooby:jooby-hibernate:${joobyVersion}"
+    implementation "io.jooby:jooby-swagger-ui:${joobyVersion}"
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+    implementation "com.h2database:h2:${h2Version}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationsVersion}"
+    implementation "io.jsonwebtoken:jjwt-api:$jsonWebtokenVersion"
+    implementation "io.jsonwebtoken:jjwt-impl:$jsonWebtokenVersion"
+    implementation "io.jsonwebtoken:jjwt-jackson:$jsonWebtokenVersion"
+    implementation "com.google.code.gson:gson:${gsonVersion}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testImplementation "io.jooby:jooby-test:${joobyVersion}"
+    testImplementation "com.squareup.okhttp3:okhttp:${okhttp3Version}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+/** Java debug information: */
+tasks.withType(JavaCompile) {
+    options.compilerArgs += [
+            '-parameters',
+            '-Ajooby.incremental=true',
+            '-Ajooby.services=true',
+            '-Ajooby.debug=false'
+    ]
+    options.debug = true
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+joobyRun.dependsOn openAPI
+
+jar.dependsOn openAPI
